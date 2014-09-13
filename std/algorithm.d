@@ -6135,15 +6135,37 @@ return $(D false).
 bool skipOver(alias pred = "a == b", R1, R2)(ref R1 r1, R2 r2)
 if (is(typeof(binaryFun!pred(r1.front, r2.front))))
 {
-    auto r = r1.save;
-    while (!r2.empty && !r.empty && binaryFun!pred(r.front, r2.front))
+    //Note: While narrow strings don't have a "true" length, for a narrow string to start with another
+    //narrow string *of the same type*, it must have *at least* as many code units.
+    static if ((hasLength!R1 && hasLength!R2) ||
+        (isNarrowString!R1 && isNarrowString!R2 && ElementEncodingType!R1.sizeof == ElementEncodingType!R2.sizeof))
     {
-        r.popFront();
-        r2.popFront();
+        if (r1.length < r2.length) return false;
     }
-    if (r2.empty)
-        r1 = r;
-    return r2.empty;
+
+    static if (is(typeof(pred) : string) && pred == "a == b" && isArray!R1 && isArray!R2 &&
+       is(Unqual!(ElementEncodingType!R1) == Unqual!(ElementEncodingType!R2)))
+    {
+        //Array slice comparison mode
+        if (r1[0 .. r2.length] == r2)
+        {
+            r1 = r1[r2.length .. $];
+            return true;
+        }
+        return false;
+    }
+    else
+    {
+        auto r = r1.save;
+        while (!r2.empty && !r.empty && binaryFun!pred(r.front, r2.front))
+        {
+            r.popFront();
+            r2.popFront();
+        }
+        if (r2.empty)
+            r1 = r;
+        return r2.empty;
+    }
 }
 
 ///
@@ -6160,6 +6182,23 @@ unittest
     assert(r1 == ["abc", "def", "hij"]);
     assert(skipOver!((a, b) => a.equal(b))(r1, r2));
     assert(r1 == ["def", "hij"]);
+
+    static struct LenRange
+    {
+        size_t length;
+
+        bool empty() { assert(0); }
+        dchar front() { assert(0); }
+        void popFront() { assert(0); }
+        LenRange save() { assert(0); }
+    }
+    static assert(isInputRange!LenRange && hasLength!LenRange);
+    auto lr = LenRange(10);
+    assert(!skipOver(lr, LenRange(20)));
+
+    int[] arr = [1, 2, 3, 4, 5];
+    assert(skipOver(arr, [1, 2, 3]));
+    assert(arr == [4, 5]);
 }
 
 /**
