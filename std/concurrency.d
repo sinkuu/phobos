@@ -1618,7 +1618,7 @@ private
 }
 
 
-version( unittest )
+version( unittest ) private
 {
     import std.stdio;
 

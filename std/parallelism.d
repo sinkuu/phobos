@@ -3899,7 +3899,7 @@ private struct RoundRobinBuffer(C1, C2)
     }
 }
 
-version(unittest)
+version(unittest) private
 {
     // This was the only way I could get nested maps to work.
     __gshared TaskPool poolInstance;
@@ -4556,11 +4556,11 @@ version(parallelismStressTest)
     }
 }
 
-version(unittest)
+version(unittest) private
 {
     struct __S_12733
     {
-        invariant() { assert(checksum == 1234567890); }    
+        invariant() { assert(checksum == 1234567890); }
         this(ulong u){n = u;}
         void opAssign(__S_12733 s){this.n = s.n;}
         ulong n;
@@ -4573,6 +4573,6 @@ version(unittest)
 unittest
 {
     immutable ulong[] data = [ 2UL^^59-1, 2UL^^59-1, 2UL^^59-1, 112_272_537_195_293UL ];
- 
+
     auto result = taskPool.amap!__genPair_12733(data);
 }

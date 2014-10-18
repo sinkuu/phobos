@@ -1,4 +1,4 @@
-﻿/**
+/**
 Helper functions for working with $(I C strings).
 
 This module is intended to provide fast, safe and garbage free
@@ -45,7 +45,7 @@ import std.traits;
 import std.utf;
 
 
-version(unittest)
+version(unittest) private
 @property inout(C)[] asArray(C)(inout C* cstr) pure nothrow @nogc
 if(isSomeChar!C)
 in { assert(cstr); }

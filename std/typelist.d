@@ -171,7 +171,8 @@ template All(alias List, alias F)
         enum All = F!(List.head) && All!(List.tail, F);
 }
 
-version(unittest) {
+version(unittest) private
+{
     template IsPointer(T)
     {
         static if (is (T foo: U*, U))
@@ -221,7 +222,8 @@ private template Map(alias F, alias List)
         alias Cons!(F!(List.head), Map!(F, List.tail)) Map;
 }
 
-version(unittest) {
+version(unittest) private
+{
     template MakePtr(T)
     {
         alias T* MakePtr;
@@ -277,7 +279,8 @@ template FoldRight(alias F, int Init, alias List)
         alias F!(List.head, FoldRight!(F, Init, List.tail)) FoldRight;
 }
 
-version(unittest) {
+version(unittest) private
+{
     template snoC(T, alias List)
     {
         alias TypeList!(List.toTuple, T) snoC;

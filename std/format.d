@@ -3272,7 +3272,7 @@ private int getNthInt(A...)(uint index, A args)
 
 /* ======================== Unit Tests ====================================== */
 
-version(unittest)
+version(unittest) private
 void formatTest(T)(T val, string expected, size_t ln = __LINE__, string fn = __FILE__)
 {
     FormatSpec!char f;
@@ -3283,7 +3283,7 @@ void formatTest(T)(T val, string expected, size_t ln = __LINE__, string fn = __F
             text("expected = `", expected, "`, result = `", w.data, "`"), fn, ln);
 }
 
-version(unittest)
+version(unittest) private
 void formatTest(T)(string fmt, T val, string expected, size_t ln = __LINE__, string fn = __FILE__)
 {
     auto w = appender!string();
@@ -3293,7 +3293,7 @@ void formatTest(T)(string fmt, T val, string expected, size_t ln = __LINE__, str
             text("expected = `", expected, "`, result = `", w.data, "`"), fn, ln);
 }
 
-version(unittest)
+version(unittest) private
 void formatTest(T)(T val, string[] expected, size_t ln = __LINE__, string fn = __FILE__)
 {
     FormatSpec!char f;
@@ -3308,7 +3308,7 @@ void formatTest(T)(T val, string[] expected, size_t ln = __LINE__, string fn = _
             text("expected one of `", expected, "`, result = `", w.data, "`"), fn, ln);
 }
 
-version(unittest)
+version(unittest) private
 void formatTest(T)(string fmt, T val, string[] expected, size_t ln = __LINE__, string fn = __FILE__)
 {
     auto w = appender!string();
@@ -3894,7 +3894,7 @@ unittest
     assert(a == "hello" && b == 124 && c == 34.5);
 }
 
-version(unittest)
+version(unittest) private
 void formatReflectTest(T)(ref T val, string fmt, string formatted, string fn = __FILE__, size_t ln = __LINE__)
 {
     auto w = appender!string();
@@ -3934,7 +3934,7 @@ void formatReflectTest(T)(ref T val, string fmt, string formatted, string fn = _
             input, fn, ln);
 }
 
-version(unittest)
+version(unittest) private
 void formatReflectTest(T)(ref T val, string fmt, string[] formatted, string fn = __FILE__, size_t ln = __LINE__)
 {
     auto w = appender!string();

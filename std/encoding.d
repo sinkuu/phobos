@@ -2927,7 +2927,7 @@ unittest
 
 
 // Helper functions
-version(unittest)
+version(unittest) private
 {
     void transcodeReverse(Src,Dst)(immutable(Src)[] s, out immutable(Dst)[] r)
     {

@@ -160,7 +160,7 @@ else version(D_InlineAsm_X86_64)
 }
 
 
-version(unittest)
+version(unittest) private
 {
     import core.stdc.stdio;
 

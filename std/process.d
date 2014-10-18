@@ -2524,7 +2524,7 @@ private char[] escapeWindowsArgumentImpl(alias allocator)(in char[] arg)
     return buf;
 }
 
-version(Windows) version(unittest)
+version(Windows) version(unittest) private
 {
     import core.sys.windows.windows;
     import core.stdc.stddef;

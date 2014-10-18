@@ -30786,7 +30786,8 @@ unittest
     assertThrown!DateTimeException(parseRFC822DateTime(badStr));
 }
 
-version(unittest) void testParse822(alias cr)(string str, SysTime expected, size_t line = __LINE__)
+version(unittest) private
+void testParse822(alias cr)(string str, SysTime expected, size_t line = __LINE__)
 {
     auto value = cr(str);
     auto result = parseRFC822DateTime(value);
@@ -30794,7 +30795,8 @@ version(unittest) void testParse822(alias cr)(string str, SysTime expected, size
         throw new AssertError(format("wrong result. expected [%s], actual[%s]", expected, result), __FILE__, line);
 }
 
-version(unittest) void testBadParse822(alias cr)(string str, size_t line = __LINE__)
+version(unittest) private
+void testBadParse822(alias cr)(string str, size_t line = __LINE__)
 {
     try
         parseRFC822DateTime(cr(str));

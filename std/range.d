@@ -476,7 +476,7 @@ enum dummyRanges = q{
 
 };
 
-version(unittest)
+version(unittest) private
 {
     mixin(dummyRanges);
 

@@ -40,7 +40,7 @@ else version (Posix)
 else
     static assert(false, "Module " ~ .stringof ~ " not implemented for this OS.");
 
-version (unittest)
+version (unittest) private
 {
     import core.thread;
 

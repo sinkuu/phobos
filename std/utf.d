@@ -2593,7 +2593,7 @@ pure nothrow @nogc unittest
 
 
 // Ranges of code units for testing.
-version(unittest)
+version(unittest) private
 {
     struct InputCU(C)
     {
@@ -3538,7 +3538,7 @@ pure @safe nothrow @nogc unittest
     foreach (c; s[].byDchar()) { }
 }
 
-version(unittest)
+version(unittest) private
 int impureVariable;
 
 @system unittest

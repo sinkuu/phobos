@@ -284,7 +284,7 @@ package
     }
 }
 
-version(unittest)
+version(unittest) private
 {
     alias TypeQualifierList = TypeTuple!(MutableOf, ConstOf, SharedOf, SharedConstOf, ImmutableOf);
 
@@ -1965,7 +1965,7 @@ template SetFunctionAttributes(T, string linkage, uint attrs)
     alias SetFunctionAttributes = FunctionTypeOf!(SetFunctionAttributes!(T*, linkage, attrs));
 }
 
-version (unittest)
+version (unittest) private
 {
     // Some function types to test.
     int sc(scope int, ref int, out int, lazy int, int);
