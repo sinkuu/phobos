@@ -849,6 +849,11 @@ T toImpl(T, S)(S value)
         // other integral-to-string conversions with default radix
         return toImpl!(T, S)(value, 10);
     }
+    else static if (isBoolean!S && !is(S == enum))
+    {
+        // bool-to-string conversions
+        return value ? "true" : "false";
+    }
     else static if (is(S == void[]) || is(S == const(void)[]) || is(S == immutable(void)[]))
     {
         import core.stdc.string : memcpy;
@@ -911,6 +916,13 @@ T toImpl(T, S)(S value)
         // other non-string values runs formatting
         return toStr!T(value);
     }
+}
+
+nothrow unittest
+{
+    assert(false.to!string == "false");
+    assert(true.to!wstring == "true");
+    static assert(is(typeof(false.to!dstring) == dstring));
 }
 
 /*
