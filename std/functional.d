@@ -274,7 +274,7 @@ private uint _ctfeMatchUnary(string fun, string name)
     if (!__ctfe) assert(false);
     import std.stdio;
     fun._ctfeSkipOp();
-    for (;;) 
+    for (;;)
     {
         immutable h = fun._ctfeSkipName(name) + fun._ctfeSkipInteger();
         if (h == 0)
@@ -321,7 +321,7 @@ private uint _ctfeMatchBinary(string fun, string name1, string name2)
 {
     if (!__ctfe) assert(false);
     fun._ctfeSkipOp();
-    for (;;) 
+    for (;;)
     {
         immutable h = fun._ctfeSkipName(name1) + fun._ctfeSkipName(name2) + fun._ctfeSkipInteger();
         if (h == 0)
@@ -988,7 +988,9 @@ template memoize(alias fun)
         auto t = Tuple!Args(args);
         if (auto p = t in memo)
             return *p;
-        return memo[t] = fun(args);
+        auto result = fun(args);
+        memo[t] = result;
+        return result;
     }
 }
 
@@ -1145,6 +1147,19 @@ unittest
     alias func = memoize!(_func, 10);
     assert(func(int.init) == 1);
     assert(func(int.init) == 1);
+}
+
+// Bugzilla 14037
+unittest
+{
+    import std.bigint;
+    BigInt fibonacci(uint n) {
+        alias mFib = memoize!fibonacci;
+        if (n < 2)
+            return BigInt(1);
+        else
+            return mFib(n - 1) + mFib(n - 2);
+    }
 }
 
 private struct DelegateFaker(F)
